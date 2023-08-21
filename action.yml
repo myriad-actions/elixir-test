@@ -1,0 +1,40 @@
+name: Test Elixir Project
+description: Checks out the code and runs the test
+inputs:
+  elixir-version:
+    required: true
+    description: Elixir version to set up
+  otp-version:
+    required: true
+    description: OTP version to set up
+  ssh-key:
+    description: SSH key to use for the CI
+    required: true
+  #################################################################
+  # Everything below this line is optional.
+  #################################################################
+  check-test:
+    description: "Run test"
+    default: 'true'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Elixir Project
+      uses: myriad-sas/.github/.github/actions/elixir-setup@hub-security
+      with:
+        elixir-version: ${{ inputs.elixir-version }}
+        otp-version: ${{ inputs.otp-version }}
+        ssh-key: ${{ inputs.ssh-key }}
+      env:
+        MIX_ENV: test
+    
+    - name: Run tests
+      run: mix test
+      shell: sh
+      if: ${{ inputs.check-test }} == 'true'
+  
