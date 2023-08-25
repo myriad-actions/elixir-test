@@ -36,5 +36,5 @@ runs:
     - name: Run tests
       run: mix test
       shell: sh
-      if: ${{ inputs.check-test }}
+      if: inputs.check-test
   
