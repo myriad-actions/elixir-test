@@ -15,12 +15,14 @@ inputs:
   #################################################################
   check-test:
     description: "Run test with coverage"
-    default: 'true'
+    default: true
     required: false
+    type: boolean
   check-test-with-coverage-and-warnings-as-errors:
     description: "Run test with coverage and warnings as errors"
-    default: 'false'
+    default: false
     required: false
+    type: boolean
 
 runs:
   using: "composite"
@@ -40,10 +42,10 @@ runs:
     - name: Run tests with coverage
       run: mix test --cover
       shell: sh
-      if: inputs.check-test == 'true'
+      if: ${{inputs.check-test}}
 
     - name: Run tests with coverage and warnings as errors
       run: mix test --cover --warnings-as-errors
       shell: sh
-      if: ${{ inputs.check-test-with-coverage-and-warnings-as-errors == 'true' }}
+      if: ${{ inputs.check-test-with-coverage-and-warnings-as-errors}}
   
