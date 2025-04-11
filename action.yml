@@ -14,8 +14,12 @@ inputs:
   # Everything below this line is optional.
   #################################################################
   check-test:
-    description: "Run test"
+    description: "Run test with coverage"
     default: 'true'
+    required: false
+  check-test-with-coverage-and-warnings-as-errors:
+    description: "Run test with coverage and warnings as errors"
+    default: 'false'
     required: false
 
 runs:
@@ -33,8 +37,13 @@ runs:
       env:
         MIX_ENV: test
     
-    - name: Run tests
-      run: mix test
+    - name: Run tests with coverage
+      run: mix test --cover
       shell: sh
       if: inputs.check-test == 'true'
+
+    - name: Run tests with coverage and warnings as errors
+      run: mix test --cover --warnings-as-errors
+      shell: sh
+      if: ${{ inputs.check-test-with-coverage-and-warnings-as-errors == 'true' }}
   
